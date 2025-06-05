@@ -1,10 +1,10 @@
 {
   "name": "Pediatric Sepsis Risk Tool",
-  "short_name": "Sepsis Tool",
+  "short_name": "SepsisTool",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#317EFB",
+  "description": "A pediatric sepsis identification tool using Phoenix and SIRS criteria.",
   "icons": [
     {
       "src": "icon-192.png",
@@ -16,5 +16,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#007bff"
 }

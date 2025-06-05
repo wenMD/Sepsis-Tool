@@ -26,6 +26,12 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+h3 {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #007bff;
+}
+
 label, select, input {
   display: block;
   width: 100%;

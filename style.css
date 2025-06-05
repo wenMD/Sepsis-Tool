@@ -1,53 +1,66 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  margin: 0;
-  padding: 0;
-}
 
-.container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 2rem;
+  color: #333;
 }
 
 h1 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
-form label {
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+label, select, input {
   display: block;
-  margin: 15px 0 5px;
-}
-
-input, select {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  margin-bottom: 1rem;
 }
 
 button {
-  margin-top: 20px;
-  width: 100%;
-  padding: 10px;
-  background-color: #317EFB;
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #255dc3;
+  background-color: #0056b3;
 }
 
-#result {
-  margin-top: 20px;
+.result {
+  padding: 1rem;
   font-weight: bold;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.low { background-color: #d4edda; color: #155724; }
+.moderate { background-color: #fff3cd; color: #856404; }
+.high { background-color: #f8d7da; color: #721c24; }
+
+footer {
   text-align: center;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  color: #666;
 }

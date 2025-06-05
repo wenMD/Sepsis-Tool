@@ -1,89 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#317EFB"/>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pediatric Sepsis Risk Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    label, select, input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      padding: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .low { background-color: #d4edda; color: #155724; }
+    .moderate { background-color: #fff3cd; color: #856404; }
+    .high { background-color: #f8d7da; color: #721c24; }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      color: #666;
+    }
+  </style>
 </head>
+
 <body>
+  <h1>Pediatric Sepsis Risk Tool</h1>
   <div class="container">
-    <h1>Pediatric Sepsis Risk Tool</h1>
-    <form id="sepsisForm">
-      <label>Age (years): <br><input type="number" id="age" step="0.1" required></label><br>
-      <label>Heart Rate: <br><input type="number" id="hr" required></label><br>
-      <label>Respiratory Rate: <br><input type="number" id="rr" required></label><br>
-      <label>Systolic BP: <br><input type="number" id="sbp" required></label><br>
-      <label>Capillary Refill > 2 sec:<br>
-        <select id="cap_refill">
-          <option value="no">No</option>
+    <div class="card">
+      <h2>Phoenix Criteria</h2>
+      <form id="phoenix-form">
+        <label for="phoenix-hr">Heart Rate Above Threshold?</label>
+        <select id="phoenix-hr">
           <option value="yes">Yes</option>
-        </select>
-      </label><br>
-      <label>GCS < 12:<br>
-        <select id="gcs">
           <option value="no">No</option>
-          <option value="yes">Yes</option>
         </select>
-      </label><br>
-      <label>Lactate > 2 mmol/L:<br>
-        <select id="lactate">
+
+        <label for="phoenix-temp">Temperature Abnormal?</label>
+        <select id="phoenix-temp">
+          <option value="yes">Yes</option>
           <option value="no">No</option>
-          <option value="yes">Yes</option>
         </select>
-      </label><br><br>
-      <button type="submit">Calculate Risk</button>
-    </form>
-    <div id="phoenixResult" style="margin-top: 1.5rem;"></div>
-    <div id="sirsResult" style="margin-top: 1.5rem;"></div>
+
+        <label for="phoenix-lactate">Lactate > 2 mmol/L?</label>
+        <select id="phoenix-lactate">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="phoenix-caprefill">Cap Refill > 2 sec?</label>
+        <select id="phoenix-caprefill">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="phoenix-mental">Altered Mental Status?</label>
+        <select id="phoenix-mental">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="phoenix-infection">Known/Suspected Infection?</label>
+        <select id="phoenix-infection">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <button type="button" onclick="calculatePhoenixRisk()">Calculate Phoenix Score</button>
+        <div id="phoenix-result" class="result"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>SIRS Criteria</h2>
+      <form id="sirs-form">
+        <label for="sirs-temp">Temp >38.5°C or <36°C?</label>
+        <select id="sirs-temp">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="sirs-hr">HR >2 SD above norm for age?</label>
+        <select id="sirs-hr">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="sirs-rr">RR >2 SD above norm for age or ventilated?</label>
+        <select id="sirs-rr">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="sirs-wbc">WBC elevated/low for age or >10% bands?</label>
+        <select id="sirs-wbc">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <button type="button" onclick="calculateSIRSRisk()">Calculate SIRS Score</button>
+        <div id="sirs-result" class="result"></div>
+      </form>
+    </div>
+
+    <footer>
+      Based on the <a href="https://doi.org/10.1097/PCC.0000000000003164" target="_blank">Phoenix Sepsis Study</a> and pediatric SIRS guidelines.
+    </footer>
   </div>
+
   <script>
-    document.getElementById('sepsisForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const age = parseFloat(document.getElementById('age').value);
-      const hr = parseFloat(document.getElementById('hr').value);
-      const rr = parseFloat(document.getElementById('rr').value);
-      const sbp = parseFloat(document.getElementById('sbp').value);
-      const capRefill = document.getElementById('cap_refill').value === 'yes';
-      const gcs = document.getElementById('gcs').value === 'yes';
-      const lactate = document.getElementById('lactate').value === 'yes';
+    function calculatePhoenixRisk() {
+      let score = 0;
+      ['phoenix-hr', 'phoenix-temp', 'phoenix-lactate', 'phoenix-caprefill', 'phoenix-mental', 'phoenix-infection']
+        .forEach(id => {
+          if (document.getElementById(id).value === 'yes') score++;
+        });
 
-      // --- Phoenix Score Logic ---
-      let phoenixScore = 0;
-      if (capRefill) phoenixScore += 1;
-      if (gcs) phoenixScore += 1;
-      if (lactate) phoenixScore += 1;
-      const phoenixMsg = `Phoenix Score: ${phoenixScore} → ` +
-        (phoenixScore >= 2 ? (capRefill || lactate ? 'High risk of septic shock' : 'Meets sepsis criteria') : 'Sepsis unlikely');
-      document.getElementById('phoenixResult').innerText = phoenixMsg;
+      const resultEl = document.getElementById('phoenix-result');
+      if (score >= 4) {
+        resultEl.className = 'result high';
+        resultEl.textContent = `High Risk (Phoenix Score: ${score})`;
+      } else if (score >= 2) {
+        resultEl.className = 'result moderate';
+        resultEl.textContent = `Moderate Risk (Phoenix Score: ${score})`;
+      } else {
+        resultEl.className = 'result low';
+        resultEl.textContent = `Low Risk (Phoenix Score: ${score})`;
+      }
+    }
 
-      // --- Basic SIRS-like Logic ---
-      let sirsCount = 0;
-      if (hr > 160) sirsCount++;
-      if (rr > 60) sirsCount++;
-      if (sbp < 70 + 2 * age) sirsCount++;
-      if (capRefill) sirsCount++;
-      if (gcs) sirsCount++;
-      if (lactate) sirsCount++;
-
-      let sirsMsg = `SIRS Risk Factors: ${sirsCount} → ` +
-        (sirsCount >= 3 ? 'High risk of sepsis' : sirsCount === 2 ? 'Intermediate risk' : 'Low risk');
-      document.getElementById('sirsResult').innerText = sirsMsg;
-    });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-          })
-          .catch(error => {
-            console.log('Service Worker registration failed:', error);
-          });
+    function calculateSIRSRisk() {
+      let score = 0;
+      ['sirs-temp', 'sirs-hr', 'sirs-rr', 'sirs-wbc'].forEach(id => {
+        if (document.getElementById(id).value === 'yes') score++;
       });
+
+      const resultEl = document.getElementById('sirs-result');
+      if (score >= 3) {
+        resultEl.className = 'result high';
+        resultEl.textContent = `High Risk (SIRS Score: ${score})`;
+      } else if (score === 2) {
+        resultEl.className = 'result moderate';
+        resultEl.textContent = `Moderate Risk (SIRS Score: ${score})`;
+      } else {
+        resultEl.className = 'result low';
+        resultEl.textContent = `Low Risk (SIRS Score: ${score})`;
+      }
     }
   </script>
+  <script src="service-worker.js"></script>
 </body>
+
 </html>

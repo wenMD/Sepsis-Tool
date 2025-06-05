@@ -82,6 +82,7 @@
     <div class="card">
       <h2>Phoenix Criteria</h2>
       <form id="phoenix-form">
+        <!-- Example criteria -->
         <label for="phoenix-hr">Heart Rate Above Threshold?</label>
         <select id="phoenix-hr">
           <option value="yes">Yes</option>
@@ -94,29 +95,7 @@
           <option value="no">No</option>
         </select>
 
-        <label for="phoenix-lactate">Lactate > 2 mmol/L?</label>
-        <select id="phoenix-lactate">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <label for="phoenix-caprefill">Cap Refill > 2 sec?</label>
-        <select id="phoenix-caprefill">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <label for="phoenix-mental">Altered Mental Status?</label>
-        <select id="phoenix-mental">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <label for="phoenix-infection">Known/Suspected Infection?</label>
-        <select id="phoenix-infection">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
+        <!-- Add additional Phoenix criteria here -->
 
         <button type="button" onclick="calculatePhoenixRisk()">Calculate Phoenix Score</button>
         <div id="phoenix-result" class="result"></div>
@@ -126,29 +105,20 @@
     <div class="card">
       <h2>SIRS Criteria</h2>
       <form id="sirs-form">
-        <label for="sirs-temp">Temp >38.5°C or <36°C?</label>
-        <select id="sirs-temp">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <label for="sirs-hr">HR >2 SD above norm for age?</label>
+        <!-- Example criteria -->
+        <label for="sirs-hr">Heart Rate Elevated?</label>
         <select id="sirs-hr">
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
 
-        <label for="sirs-rr">RR >2 SD above norm for age or ventilated?</label>
-        <select id="sirs-rr">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <label for="sirs-wbc">WBC elevated/low for age or >10% bands?</label>
+        <label for="sirs-wbc">Abnormal WBC Count?</label>
         <select id="sirs-wbc">
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
+
+        <!-- Add additional SIRS criteria here -->
 
         <button type="button" onclick="calculateSIRSRisk()">Calculate SIRS Score</button>
         <div id="sirs-result" class="result"></div>
@@ -156,23 +126,22 @@
     </div>
 
     <footer>
-      Based on the <a href="https://doi.org/10.1097/PCC.0000000000003164" target="_blank">Phoenix Sepsis Study</a> and pediatric SIRS guidelines.
+      Based on the <a href="https://jamanetwork.com/journals/jama/fullarticle/2814296" target="_blank">Phoenix Sepsis Study</a> and <a href="https://pubmed.ncbi.nlm.nih.gov/15636651/" target="_blank">pediatric SIRS guidelines</a>.
     </footer>
   </div>
 
   <script>
     function calculatePhoenixRisk() {
       let score = 0;
-      ['phoenix-hr', 'phoenix-temp', 'phoenix-lactate', 'phoenix-caprefill', 'phoenix-mental', 'phoenix-infection']
-        .forEach(id => {
-          if (document.getElementById(id).value === 'yes') score++;
-        });
+      if (document.getElementById('phoenix-hr').value === 'yes') score++;
+      if (document.getElementById('phoenix-temp').value === 'yes') score++;
+      // Add more criteria logic here
 
       const resultEl = document.getElementById('phoenix-result');
-      if (score >= 4) {
+      if (score >= 2) {
         resultEl.className = 'result high';
         resultEl.textContent = `High Risk (Phoenix Score: ${score})`;
-      } else if (score >= 2) {
+      } else if (score === 1) {
         resultEl.className = 'result moderate';
         resultEl.textContent = `Moderate Risk (Phoenix Score: ${score})`;
       } else {
@@ -183,15 +152,15 @@
 
     function calculateSIRSRisk() {
       let score = 0;
-      ['sirs-temp', 'sirs-hr', 'sirs-rr', 'sirs-wbc'].forEach(id => {
-        if (document.getElementById(id).value === 'yes') score++;
-      });
+      if (document.getElementById('sirs-hr').value === 'yes') score++;
+      if (document.getElementById('sirs-wbc').value === 'yes') score++;
+      // Add more criteria logic here
 
       const resultEl = document.getElementById('sirs-result');
-      if (score >= 3) {
+      if (score >= 2) {
         resultEl.className = 'result high';
         resultEl.textContent = `High Risk (SIRS Score: ${score})`;
-      } else if (score === 2) {
+      } else if (score === 1) {
         resultEl.className = 'result moderate';
         resultEl.textContent = `Moderate Risk (SIRS Score: ${score})`;
       } else {

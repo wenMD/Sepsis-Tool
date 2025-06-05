@@ -2,112 +2,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Pediatric Sepsis Tool</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<!-- Content pulled directly from canvas document -->
-<label for="phoenix-map-age">Select Age Group:</label>
-<select id="phoenix-map-age" onchange="updateMapScore()" title="Click to see age-based MAP thresholds">
-  <option value="">--Select Age--</option>
-  <option value="0-1">0–1 mo</option>
-  <option value="1-11">1–11 mo</option>
-  <option value="12-23">1–2 yr</option>
-  <option value="24-59">2–5 yr</option>
-  <option value="60-143">5–12 yr</option>
-  <option value="144-216">12–17 yr</option>
-</select>
-<small style="display:block; margin-bottom: 1rem; color: #555;">
-  <strong>MAP Risk Scoring:</strong><br>
-  0 points: MAP normal for age<br>
-  1 point: mildly low MAP<br>
-  2 points: significantly low MAP<br>
-  <br><a href="#" onclick="toggleMapTable(); return false;">Show MAP Scoring Table</a>
-</small>
-<div id="map-threshold-table" style="display:none; margin-bottom:1rem;">
-  <table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-      <tr><th>Age Group</th><th>0 points</th><th>1 point</th><th>2 points</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>0–1 month</td><td>≥30</td><td>25–29</td><td>&lt;25</td></tr>
-      <tr><td>1–11 months</td><td>≥38</td><td>33–37</td><td>&lt;33</td></tr>
-      <tr><td>1–2 years</td><td>≥41</td><td>36–40</td><td>&lt;36</td></tr>
-      <tr><td>2–5 years</td><td>≥44</td><td>39–43</td><td>&lt;39</td></tr>
-      <tr><td>5–12 years</td><td>≥46</td><td>41–45</td><td>&lt;41</td></tr>
-      <tr><td>12–17 years</td><td>≥51</td><td>46–50</td><td>&lt;46</td></tr>
-    </tbody>
-  </table>
-</div>
+  <h1>Pediatric Sepsis Identification Tool</h1>
 
-<label for="phoenix-map-value">Enter Patient MAP (mmHg):</label>
-<input type="number" id="phoenix-map-value" oninput="updateMapScore()" />
+  <section>
+    <h2>Phoenix Criteria</h2>
 
-<input type="hidden" id="phoenix-map-score" value="0" />
+    <label for="phoenix-map-age">Select Age Group:</label>
+    <select id="phoenix-map-age" onchange="updateMapScore()" title="Click to see age-based MAP thresholds">
+      <option value="">--Select Age--</option>
+      <option value="0-1">0–1 mo</option>
+      <option value="1-11">1–11 mo</option>
+      <option value="12-23">1–2 yr</option>
+      <option value="24-59">2–5 yr</option>
+      <option value="60-143">5–12 yr</option>
+      <option value="144-216">12–17 yr</option>
+    </select>
 
-<small style="display:block; margin-top: 2rem; color: #555;">
-  <strong>SIRS Age-Based Thresholds:</strong>
-  <br><a href="#" onclick="toggleSirsTable(); return false;">Show SIRS Scoring Table</a>
-</small>
-<div id="sirs-threshold-table" style="display:none; margin-top:1rem;">
-  <table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-      <tr><th>Age Group</th><th>HR Tachycardia</th><th>HR Bradycardia</th><th>RR</th><th>WBC High</th><th>WBC Low</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>0–7 days</td><td>&gt;180</td><td>&lt;100</td><td>&gt;50</td><td>&gt;34</td><td>—</td></tr>
-      <tr><td>1 wk – 1 mo</td><td>&gt;180</td><td>&lt;100</td><td>&gt;40</td><td>&gt;19.5</td><td>&lt;5</td></tr>
-      <tr><td>1 mo – 1 yr</td><td>&gt;180</td><td>&lt;90</td><td>&gt;34</td><td>&gt;17.5</td><td>&lt;5</td></tr>
-      <tr><td>2–5 yrs</td><td>&gt;140</td><td>—</td><td>&gt;22</td><td>&gt;15.5</td><td>&lt;6</td></tr>
-      <tr><td>6–12 yrs</td><td>&gt;130</td><td>—</td><td>&gt;18</td><td>&gt;13.5</td><td>&lt;4.5</td></tr>
-      <tr><td>13–17 yrs</td><td>&gt;110</td><td>—</td><td>&gt;14</td><td>&gt;11</td><td>&lt;4.5</td></tr>
-    </tbody>
-  </table>
-</div>
+    <small style="display:block; margin-bottom: 1rem; color: #555;">
+      <strong>MAP Risk Scoring:</strong><br>
+      0 points: MAP normal for age<br>
+      1 point: mildly low MAP<br>
+      2 points: significantly low MAP<br>
+      <br><a href="#" onclick="toggleMapTable(); return false;">Show MAP Scoring Table</a>
+    </small>
 
-<script>
-function updateMapScore() {
-  const ageGroup = document.getElementById('phoenix-map-age').value;
-  const mapActual = parseInt(document.getElementById('phoenix-map-value').value);
-  let score = 0;
+    <div id="map-threshold-table" style="display:none; margin-bottom:1rem;">
+      <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+          <tr><th>Age Group</th><th>0 points</th><th>1 point</th><th>2 points</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–1 month</td><td>≥30</td><td>25–29</td><td>&lt;25</td></tr>
+          <tr><td>1–11 months</td><td>≥38</td><td>33–37</td><td>&lt;33</td></tr>
+          <tr><td>1–2 years</td><td>≥41</td><td>36–40</td><td>&lt;36</td></tr>
+          <tr><td>2–5 years</td><td>≥44</td><td>39–43</td><td>&lt;39</td></tr>
+          <tr><td>5–12 years</td><td>≥46</td><td>41–45</td><td>&lt;41</td></tr>
+          <tr><td>12–17 years</td><td>≥51</td><td>46–50</td><td>&lt;46</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-  if (!ageGroup || isNaN(mapActual)) {
-    document.getElementById('phoenix-map-score').value = score;
-    return;
-  }
+    <label for="phoenix-map-value">Enter Patient MAP (mmHg):</label>
+    <input type="number" id="phoenix-map-value" oninput="updateMapScore()" />
+    <input type="hidden" id="phoenix-map-score" value="0" />
+  </section>
 
-  const thresholds = {
-    "0-1": [30, 25],
-    "1-11": [38, 33],
-    "12-23": [41, 36],
-    "24-59": [44, 39],
-    "60-143": [46, 41],
-    "144-216": [51, 46]
-  };
+  <section style="margin-top:2rem;">
+    <h2>SIRS Criteria</h2>
+    <small style="display:block; margin-bottom: 1rem; color: #555;">
+      <strong>SIRS Age-Based Thresholds:</strong>
+      <br><a href="#" onclick="toggleSirsTable(); return false;">Show SIRS Scoring Table</a>
+    </small>
+    <div id="sirs-threshold-table" style="display:none; margin-top:1rem;">
+      <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+          <tr><th>Age Group</th><th>HR Tachycardia</th><th>HR Bradycardia</th><th>RR</th><th>WBC High</th><th>WBC Low</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–7 days</td><td>&gt;180</td><td>&lt;100</td><td>&gt;50</td><td>&gt;34</td><td>—</td></tr>
+          <tr><td>1 wk – 1 mo</td><td>&gt;180</td><td>&lt;100</td><td>&gt;40</td><td>&gt;19.5</td><td>&lt;5</td></tr>
+          <tr><td>1 mo – 1 yr</td><td>&gt;180</td><td>&lt;90</td><td>&gt;34</td><td>&gt;17.5</td><td>&lt;5</td></tr>
+          <tr><td>2–5 yrs</td><td>&gt;140</td><td>—</td><td>&gt;22</td><td>&gt;15.5</td><td>&lt;6</td></tr>
+          <tr><td>6–12 yrs</td><td>&gt;130</td><td>—</td><td>&gt;18</td><td>&gt;13.5</td><td>&lt;4.5</td></tr>
+          <tr><td>13–17 yrs</td><td>&gt;110</td><td>—</td><td>&gt;14</td><td>&gt;11</td><td>&lt;4.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-  const [normal, low] = thresholds[ageGroup];
+  <script>
+    function updateMapScore() {
+      const ageGroup = document.getElementById('phoenix-map-age').value;
+      const mapActual = parseInt(document.getElementById('phoenix-map-value').value);
+      let score = 0;
 
-  if (mapActual >= normal) {
-    score = 0;
-  } else if (mapActual >= low) {
-    score = 1;
-  } else {
-    score = 2;
-  }
+      if (!ageGroup || isNaN(mapActual)) {
+        document.getElementById('phoenix-map-score').value = score;
+        return;
+      }
 
-  document.getElementById('phoenix-map-score').value = score;
-}
+      const thresholds = {
+        "0-1": [30, 25],
+        "1-11": [38, 33],
+        "12-23": [41, 36],
+        "24-59": [44, 39],
+        "60-143": [46, 41],
+        "144-216": [51, 46]
+      };
 
-function toggleMapTable() {
-  const table = document.getElementById('map-threshold-table');
-  table.style.display = table.style.display === 'none' ? 'block' : 'none';
-}
+      const [normal, low] = thresholds[ageGroup];
 
-function toggleSirsTable() {
-  const table = document.getElementById('sirs-threshold-table');
-  table.style.display = table.style.display === 'none' ? 'block' : 'none';
-}
-</script>
+      if (mapActual >= normal) {
+        score = 0;
+      } else if (mapActual >= low) {
+        score = 1;
+      } else {
+        score = 2;
+      }
+
+      document.getElementById('phoenix-map-score').value = score;
+    }
+
+    function toggleMapTable() {
+      const table = document.getElementById('map-threshold-table');
+      table.style.display = table.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleSirsTable() {
+      const table = document.getElementById('sirs-threshold-table');
+      table.style.display = table.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
 </body>
 </html>

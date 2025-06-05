@@ -10,8 +10,77 @@
 </head>
 
 <body>
-  <!-- Body content omitted here for brevity, already reviewed in prior messages -->
-  <script src="service-worker.js"></script>
-</body>
+  <h1>Pediatric Sepsis Risk Tool</h1>
+  <div class="container">
+    <div class="card">
+      <h2>Phoenix Criteria</h2>
+      <form id="phoenix-form">
+        <h3>Respiratory (0–3 points)</h3>
+        <label for="phoenix-resp">Select respiratory status:</label>
+        <select id="phoenix-resp">
+          <option value="0">PaO₂:FiO₂ ≥400 or SpO₂:FiO₂ ≥292</option>
+          <option value="1">PaO₂:FiO₂ <400 and any support OR SpO₂:FiO₂ <292 with support</option>
+          <option value="2">PaO₂:FiO₂ 100–200 and IMV OR SpO₂:FiO₂ 148–220 and IMV</option>
+          <option value="3">PaO₂:FiO₂ <100 and IMV OR SpO₂:FiO₂ <148 and IMV</option>
+        </select>
 
+        <h3>Cardiovascular (0–6 points)</h3>
+        <label for="phoenix-vaso">Select vasoactive support:</label>
+        <select id="phoenix-vaso">
+          <option value="0">No vasoactive medications</option>
+          <option value="1">1 vasoactive medication</option>
+          <option value="2">≥2 vasoactive medications</option>
+        </select>
+
+        <label for="phoenix-lactate">Select lactate level:</label>
+        <select id="phoenix-lactate">
+          <option value="0">Lactate <5 mmol/L</option>
+          <option value="1">Lactate 5–10.9 mmol/L</option>
+          <option value="2">Lactate ≥11 mmol/L</option>
+        </select>
+
+        <label for="phoenix-map">Select Mean Arterial Pressure by age:</label>
+        <select id="phoenix-map">
+          <option value="0">MAP above normal threshold</option>
+          <option value="1">MAP mildly below threshold</option>
+          <option value="2">MAP significantly below threshold</option>
+        </select>
+
+        <details>
+          <summary>Show MAP Scoring Table</summary>
+          <table>
+            <thead><tr><th>Age</th><th>0 pts</th><th>1 pt</th><th>2 pts</th></tr></thead>
+            <tbody>
+              <tr><td>0–1 mo</td><td>≥30</td><td>25–29</td><td><25</td></tr>
+              <tr><td>1–11 mo</td><td>≥38</td><td>33–37</td><td><33</td></tr>
+              <tr><td>1–2 yr</td><td>≥41</td><td>36–40</td><td><36</td></tr>
+              <tr><td>2–5 yr</td><td>≥44</td><td>39–43</td><td><39</td></tr>
+              <tr><td>5–12 yr</td><td>≥46</td><td>41–45</td><td><41</td></tr>
+              <tr><td>12–17 yr</td><td>≥51</td><td>46–50</td><td><46</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <h3>Coagulation (0–2 points)</h3>
+        <label for="phoenix-coag">Select highest scoring abnormality (or none):</label>
+        <select id="phoenix-coag">
+          <option value="0">No abnormalities</option>
+          <option value="1">1 abnormal lab (e.g., Platelets <100k, INR>1.3, D-dimer>2, Fibrinogen<100)</option>
+          <option value="2">≥2 abnormal labs</option>
+        </select>
+
+        <h3>Neurologic (0–2 points)</h3>
+        <label for="phoenix-neuro">Select neurological status:</label>
+        <select id="phoenix-neuro">
+          <option value="0">GCS >10; pupils reactive</option>
+          <option value="1">GCS ≤10</option>
+          <option value="2">Fixed pupils bilaterally</option>
+        </select>
+
+        <button type="button" onclick="calculatePhoenixRisk()">Calculate Phoenix Score</button>
+        <div id="phoenix-result" class="result"></div>
+      </form>
+    </div>
+  </div>
+</body>
 </html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#317EFB"/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <title>Pediatric Sepsis Risk Tool</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Pediatric Sepsis Risk Tool</h1>
+    <form id="sepsisForm">
+      <label>Age (years): <br><input type="number" id="age" step="0.1" required></label><br>
+      <label>Heart Rate: <br><input type="number" id="hr" required></label><br>
+      <label>Respiratory Rate: <br><input type="number" id="rr" required></label><br>
+      <label>Systolic BP: <br><input type="number" id="sbp" required></label><br>
+      <label>Capillary Refill > 2 sec:<br>
+        <select id="cap_refill">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label><br>
+      <label>GCS < 12:<br>
+        <select id="gcs">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label><br>
+      <label>Lactate > 2 mmol/L:<br>
+        <select id="lactate">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label><br>
+      <button type="submit">Calculate Risk</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

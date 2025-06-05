@@ -33,13 +33,46 @@
           <option value="no">No</option>
           <option value="yes">Yes</option>
         </select>
-      </label><br>
+      </label><br><br>
       <button type="submit">Calculate Risk</button>
     </form>
-    <div id="result"></div>
+    <div id="phoenixResult" style="margin-top: 1.5rem;"></div>
+    <div id="sirsResult" style="margin-top: 1.5rem;"></div>
   </div>
-  <script src="script.js"></script>
   <script>
+    document.getElementById('sepsisForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const age = parseFloat(document.getElementById('age').value);
+      const hr = parseFloat(document.getElementById('hr').value);
+      const rr = parseFloat(document.getElementById('rr').value);
+      const sbp = parseFloat(document.getElementById('sbp').value);
+      const capRefill = document.getElementById('cap_refill').value === 'yes';
+      const gcs = document.getElementById('gcs').value === 'yes';
+      const lactate = document.getElementById('lactate').value === 'yes';
+
+      // --- Phoenix Score Logic ---
+      let phoenixScore = 0;
+      if (capRefill) phoenixScore += 1;
+      if (gcs) phoenixScore += 1;
+      if (lactate) phoenixScore += 1;
+      const phoenixMsg = `Phoenix Score: ${phoenixScore} → ` +
+        (phoenixScore >= 2 ? (capRefill || lactate ? 'High risk of septic shock' : 'Meets sepsis criteria') : 'Sepsis unlikely');
+      document.getElementById('phoenixResult').innerText = phoenixMsg;
+
+      // --- Basic SIRS-like Logic ---
+      let sirsCount = 0;
+      if (hr > 160) sirsCount++;
+      if (rr > 60) sirsCount++;
+      if (sbp < 70 + 2 * age) sirsCount++;
+      if (capRefill) sirsCount++;
+      if (gcs) sirsCount++;
+      if (lactate) sirsCount++;
+
+      let sirsMsg = `SIRS Risk Factors: ${sirsCount} → ` +
+        (sirsCount >= 3 ? 'High risk of sepsis' : sirsCount === 2 ? 'Intermediate risk' : 'Low risk');
+      document.getElementById('sirsResult').innerText = sirsMsg;
+    });
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('service-worker.js')
